@@ -2,12 +2,16 @@ package com.example.chota_don.myapplication;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.facebook.UiLifecycleHelper;
 
 import java.util.Map;
 
@@ -18,6 +22,8 @@ public class login extends Activity {
     private EditText user_name_text;
     private EditText password_text;
     private Button ok_btn;
+    private DatabaseConn dbObj;
+
 
 
     @Override
@@ -34,20 +40,11 @@ public class login extends Activity {
                     public void onClick(View v) {
                         user_name=user_name_text.getText().toString();
                         password=password_text.getText().toString();
-                        Map<String,user_info> get_map=add_user.returnMap();
-                        if(get_map.containsKey(user_name)){
-                            if(get_map.get(user_name).getPassword().equals(password)){
-                                Intent in_intent=new Intent(v.getContext(),login_facebook.class);
-                                in_intent.putExtra("msg","hiiii");
-                                startActivity(in_intent);
-                            }
-                            else{
-                                //password is wrong
 
-                            }
-                        }
-                        else{
-                            //doesn't contain key or key has been forgot
+                        if(check(user_name,password)){
+
+                            Intent in_intent=new Intent(v.getContext(),login_facebook.class);
+                            startActivity(in_intent);
 
                         }
 
@@ -55,6 +52,19 @@ public class login extends Activity {
                     }
                 }
         );
+
+    }
+
+    public boolean check(String name,String password){
+        dbObj=new DatabaseConn(this);
+        String pass=dbObj.checkLogin(name);
+       // System.out.print(pass);
+        if(pass.equals(password)){
+            return true;
+        }
+        else{
+            return false;
+        }
 
     }
 

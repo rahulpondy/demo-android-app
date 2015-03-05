@@ -3,6 +3,7 @@ package com.example.chota_don.myapplication;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,7 +11,9 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 
 public class add_user extends Activity {
@@ -21,12 +24,13 @@ public class add_user extends Activity {
     EditText password;
 
     private static Map<String,user_info> userDetailMap=new HashMap<String,user_info>();
-
+    private static Set<String> userNameSet=new HashSet<String>();
+    private DatabaseConn dbObj;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_user);
-
+        dbObj=new DatabaseConn(this);
         done=(Button) findViewById(R.id.done);
         name=(EditText) findViewById(R.id.name);
         userName=(EditText) findViewById(R.id.user_name);
@@ -37,22 +41,36 @@ public class add_user extends Activity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(userDetailMap.containsKey(userName)){
-
+                        if(checkUser(userName.getText().toString())){
+                            dbObj.insert(userName.getText().toString(),name.getText().toString(),email.getText().toString(),password.getText().toString());
+                            Intent in_intent=new Intent(v.getContext(),login_facebook.class);
+                            startActivity(in_intent);
                         }
                         else{
-                            userDetailMap.put(userName.getText().toString(),new user_info(userName.getText().toString(),name.getText().toString(),password.getText().toString(),email.getText().toString()));
-                            Intent in_intent=new Intent(v.getContext(),login_facebook.class);
-                            in_intent.putExtra("msg","hiiii");
-                            startActivity(in_intent);
+//                            userDetailMap.put(userName.getText().toString(),new user_info(userName.getText().toString(),name.getText().toString(),password.getText().toString(),email.getText().toString()));
+//                            Intent in_intent=new Intent(v.getContext(),login_facebook.class);
+//                            in_intent.putExtra("msg","hiiii");
+//                            startActivity(in_intent);
                         }
                     }
                 }
         );
     }
 
+
+
     public static Map<String,user_info> returnMap(){
         return userDetailMap;
+    }
+
+    public boolean checkUser(String name){
+        if(userNameSet.contains(name)){
+            return false;
+        }
+        else{
+            userNameSet.add(name);
+            return true;
+        }
     }
 
 

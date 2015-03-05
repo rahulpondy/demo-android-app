@@ -7,5 +7,8 @@
     <string name="title_activity_login">login</string>
     <string name="title_activity_add_user">add_user</string>
     <string name="title_activity_login_facebook">login_facebook</string>
+    <string name="facebook_api_key">806240212787999</string>
+>        <string name="title_activity_mail">mail</string>
+    <string name="title_activity_facebook_detail">Facebook_detail</string>
 
 </resources>

@@ -28,10 +28,11 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/password"
         android:layout_below="@+id/username"
-        android:layout_alignStart="@+id/username"
-        android:layout_marginTop="50dp"
-        android:text="Password" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="41dp" />
+
 </RelativeLayout>
